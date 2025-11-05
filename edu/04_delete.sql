@@ -5,7 +5,6 @@ WHERE
 	emp_id = 100020
 ;	
 
-
 DELETE FROM employees 
 WHERE 
 	emp_id = 100020
