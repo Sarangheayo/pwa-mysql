@@ -12,7 +12,7 @@
 -- 2건 이상일 경우 오류 발생
 SELECT
 	emp.emp_id
-	, emp.`name`
+	,emp.`name`
 FROM employees emp
 WHERE 
 	emp.emp_id = (
@@ -74,3 +74,67 @@ WHERE
 			department_managers.emp_id = employees.emp_id
 	)
 ;	
+
+-- -------------------  
+-- SELECT 절에서 사용
+-- -------------------
+-- 평균치 가져오고 싶을 때, 사용하는 것(GROUP BY절, FROM)
+-- 사원별 역대 전체 급여 평균(GROUP BY절, AVG)
+SELECT 
+	emp.emp_id
+	,(
+		SELECT ROUND(AVG(sal.salary))
+		FROM salaries sal	
+		WHERE emp.emp_id = sal.emp_id
+	) avg_sal
+FROM employees emp
+;
+
+-- -------------------  
+-- FROM 절에서 사용
+-- -------------------
+-- 필터링을 먼저 거친 후 join 하기 힘든 상황에 사용
+-- 집계 함수 같은 거 사용할 때 sub 로 하나 빼두고 가져와서 사용
+SELECT 
+	emp.*
+FROM (
+	SELECT
+		emp.emp_id
+		,emp.`name`
+	FROM employees emp	
+) emp
+;
+
+-- -------------------  
+-- INSERT문에서 사용
+-- -------------------
+INSERT INTO title_emps(
+	emp_id
+	,title_code
+	,start_at 
+)
+VALUES(
+	(SELECT MAX(emp_id) FROM employees)
+	,(SELECT title_code FROM titles WHERE title = '사원')
+	,DATE(NOW()) 
+);
+
+
+-- -------------------  
+-- UPDATE문에서 사용
+-- -------------------
+UPDATE title_emps title1
+SET 
+	end_at = (
+		SELECT fire_at
+		FROM employees emp
+		WHERE emp.emp_id = 100000
+	)
+WHERE 
+	title1.emp_id = 100000
+	AND title1.end_at IS NULL 
+;
+
+
+
+
