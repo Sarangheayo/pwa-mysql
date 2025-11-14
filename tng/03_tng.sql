@@ -471,7 +471,7 @@ CREATE TABLE users(
 	,`username` VARCHAR(30) NOT NULL
 	,authflg CHAR(1) DEFAULT '0'
 	,birthday DATE NOT NULL
-	,created_at DATETIME DEFAULT CRE
+	,created_at DATETIME DEFAULT (CURRENT_TIME())
 );
 -- rankmanagement 테이블 생성
 CREATE TABLE rankmanagement(
@@ -481,6 +481,25 @@ CREATE TABLE rankmanagement(
 );
 
 
+-- users 테이블 생성
+CREATE TABLE users(
+	userid INT UNSIGNED PRIMARY KEY AUTO_INCREMENT
+	,`username` VARCHAR(30) NOT NULL
+	,authflg CHAR(1) DEFAULT '0'
+	,birthday DATE NOT NULL
+-- 	,created_at DATETIME DEFAULT (CURRENT_DATE())
+	,created_at DATETIME DEFAULT CURRENT_TIMESTAMP()
+);
+-- rankmanagement 테이블 생성
+CREATE TABLE rankmanagement(
+	rankid INT UNSIGNED PRIMARY KEY AUTO_INCREMENT
+	,userid INT UNSIGNED NOT NULL
+	,`rankname` VARCHAR(30) NOT NULL
+);
+
+
+ALTER TABLE users 
+ADD COLUMN userid,
 
 SELECT 
    users.username
